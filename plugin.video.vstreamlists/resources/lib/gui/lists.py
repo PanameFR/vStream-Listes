@@ -5,6 +5,7 @@ import xbmcplugin
 
 from resources.lib.gui.media import build_list_item
 from resources.lib.adapters.vstream import VStreamPastebinAdapter
+from resources.lib.tmdb.client import TmdbClient
 
 
 def _url(base_url, **params):
@@ -44,7 +45,11 @@ def render(base_url, handle, list_id, lists_manager):
         if vstream_ok:
             # Point the item straight at vStream's own directory - Kodi
             # navigates into it natively, no redirect through our plugin.
-            target_url = adapter.movie_url(tmdb_id) if media_type == "movie" else adapter.tvshow_url(tmdb_id)
+            if media_type == "movie":
+                poster_url = TmdbClient.image_url(item.get("poster_path"))
+                target_url = adapter.movie_url(tmdb_id, title=item.get("title"), poster_url=poster_url)
+            else:
+                target_url = adapter.tvshow_url(tmdb_id)
             play_command = "Container.Update(%s)" % target_url
         else:
             # No vStream installed: keep the item local and only surface

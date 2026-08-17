@@ -17,9 +17,20 @@ from resources.lib import log
 # pastebin.py's showMovies() reads an input parameter "sTmdbId" and, when
 # present, filters the paste content down to entries whose own TMDB id
 # matches - across ALL Pastebin codes/groups the user has configured in
-# vStream (no pasteID needed). That filtered listing is exactly the
-# hand-off point our extension needs: we never see, choose or store a
-# Pastebin server, code or link - vStream keeps doing that.
+# vStream (no pasteID needed). For movies, showMovies() only ever builds
+# one further hop (function=showHosters) once exactly one match is found,
+# and getHosterList() - which showHosters() calls - accepts that same
+# idTMDB filter directly, bypassing its own title/year matching entirely
+# once an id match is found. So for movies we call showHosters directly:
+# one less screen than going through showMovies first. TV shows still go
+# through showMovies -> showSerieSaisons, since picking a season/episode
+# is unavoidable and isn't something we can (or should) skip.
+#
+# getHosterList() requires siteUrl to carry sMedia, idTMDB and sTitle (a
+# plain dict-access, no default - omitting it raises KeyError there), and
+# showHosters() separately requires a top-level sMovieTitle parameter for
+# display. We never see, choose or store a Pastebin server, code or link
+# ourselves - vStream keeps doing all of that.
 
 VSTREAM_ADDON_ID = "plugin.video.vstream"
 VSTREAM_PLUGIN_URL = "plugin://%s/" % VSTREAM_ADDON_ID
@@ -96,21 +107,35 @@ class VStreamPastebinAdapter(object):
         query.update({k: v for k, v in params.items() if v is not None})
         return VSTREAM_PLUGIN_URL + "?" + urllib.parse.urlencode(query)
 
-    def _media_url(self, media_type, tmdb_id):
-        smedia = _MEDIA_TYPE_TO_SMEDIA[media_type]
+    @staticmethod
+    def _sanitize_title(title):
+        # Mirrors pastebin.py's own convention for embedding a title inside
+        # one of these nested query strings (it does the same replace
+        # before appending '&sTitle=' to a siteUrl it builds itself).
+        title = title or ""
+        return title.replace("+", " ").replace(" & ", " | ")
+
+    def movie_url(self, tmdb_id, title=None, poster_url=None):
+        title = self._sanitize_title(title)
         # siteUrl must contain a '&' for pastebin.py to split it into a
-        # prefix (unused) and a params dict; we only care about sMedia
-        # here, everything else (which Pastebin codes to search) is left
-        # entirely to vStream's own configuration.
-        site_url = "vstreamlists&sMedia=%s" % smedia
+        # prefix (unused) and a params dict. sTitle must be present (even
+        # if idTMDB ends up matching and its value is therefore unused for
+        # filtering) since getHosterList() accesses aParams['sTitle']
+        # directly. Everything about which Pastebin codes to search is
+        # left entirely to vStream's own configuration.
+        site_url = "vstreamlists&sMedia=film&idTMDB=%s&sTitle=%s" % (tmdb_id, title)
+        url = self.build_vstream_url(
+            "showHosters", siteUrl=site_url, sMovieTitle=title, sThumb=poster_url
+        )
+        log.debug("built vStream route: media_type=movie tmdb_id=%s url=%s" % (tmdb_id, url))
+        return url
+
+    def tvshow_url(self, tmdb_id):
+        # Series still need a season/episode picked by the user, so we
+        # only get them as far as vStream's own filtered show listing.
+        site_url = "vstreamlists&sMedia=serie"
         url = self.build_vstream_url(
             "showMovies", siteUrl=site_url, sTmdbId=str(tmdb_id)
         )
-        log.debug("built vStream route: media_type=%s tmdb_id=%s url=%s" % (media_type, tmdb_id, url))
+        log.debug("built vStream route: media_type=tv tmdb_id=%s url=%s" % (tmdb_id, url))
         return url
-
-    def movie_url(self, tmdb_id):
-        return self._media_url("movie", tmdb_id)
-
-    def tvshow_url(self, tmdb_id):
-        return self._media_url("tv", tmdb_id)
