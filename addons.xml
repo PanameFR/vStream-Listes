@@ -1,0 +1,64 @@
+<addons>
+<addon id="plugin.video.vstreamlists"
+       name="vStream Listes"
+       version="0.1.0"
+       provider-name="jordan.dupuis62">
+    <requires>
+        <import addon="xbmc.python" version="3.0.0"/>
+    </requires>
+    <extension point="xbmc.python.pluginsource" library="main.py">
+        <provides>video</provides>
+    </extension>
+    <extension point="kodi.context.item" library="context.py">
+        <item>
+            <label>32900</label>
+            <visible>String.Contains(ListItem.FolderPath,plugin.video.vstream) + String.Contains(ListItem.FolderPath,site=pastebin)</visible>
+        </item>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary lang="fr_FR">Listes personnelles pour vStream (source Pastebin)</summary>
+        <description lang="fr_FR">
+            Extension independante permettant de creer et gerer des listes personnelles
+            de films et de series, identifies via TMDB, et lus via vStream / Pastebin.
+            Ne modifie aucun fichier de vStream.
+        </description>
+        <summary lang="en_GB">Personal lists for vStream (Pastebin source)</summary>
+        <description lang="en_GB">
+            Independent addon to create and manage personal movie/TV lists, identified
+            via TMDB and played through vStream / Pastebin. Does not modify vStream.
+        </description>
+        <platform>all</platform>
+        <license>GPL-3.0-only</license>
+        <source>https://github.com/</source>
+        <news>Version initiale 0.1.0</news>
+        <assets>
+            <icon>icon.png</icon>
+            <fanart>fanart.png</fanart>
+        </assets>
+    </extension>
+</addon>
+<addon id="repository.vstreamlists"
+       name="vStream Listes Repository"
+       version="1.0.0"
+       provider-name="jordan.dupuis62">
+    <extension point="xbmc.addon.repository" name="vStream Listes Repository">
+        <dir>
+            <info compressed="false">https://raw.githubusercontent.com/GITHUB_USER/REPO_NAME/main/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/GITHUB_USER/REPO_NAME/main/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/GITHUB_USER/REPO_NAME/main/repo</datadir>
+        </dir>
+    </extension>
+
+    <extension point="xbmc.addon.metadata">
+        <summary lang="fr_FR">Depot vStream Listes</summary>
+        <description lang="fr_FR">Installe et met a jour automatiquement vStream Listes.</description>
+        <summary lang="en_GB">vStream Lists Repository</summary>
+        <description lang="en_GB">Installs and auto-updates vStream Lists.</description>
+        <platform>all</platform>
+        <license>GPL-3.0-only</license>
+        <assets>
+            <icon>icon.png</icon>
+        </assets>
+    </extension>
+</addon>
+</addons>

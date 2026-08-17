@@ -1,0 +1,42 @@
+# Kodi Media Center language file
+# Addon Name: vStream Lists
+# Addon id: plugin.video.vstreamlists
+# Addon Provider: jordan.dupuis62
+msgid ""
+msgstr ""
+
+msgctxt "#30200"
+msgid "General"
+msgstr ""
+
+msgctxt "#30201"
+msgid "TMDB API key"
+msgstr ""
+
+msgctxt "#30202"
+msgid "Metadata language"
+msgstr ""
+
+msgctxt "#30203"
+msgid "Cache duration (hours)"
+msgstr ""
+
+msgctxt "#30210"
+msgid "Display"
+msgstr ""
+
+msgctxt "#30211"
+msgid "Show list item count"
+msgstr ""
+
+msgctxt "#30220"
+msgid "Advanced"
+msgstr ""
+
+msgctxt "#30221"
+msgid "Enable debug logging"
+msgstr ""
+
+msgctxt "#32900"
+msgid "Add to my lists"
+msgstr ""

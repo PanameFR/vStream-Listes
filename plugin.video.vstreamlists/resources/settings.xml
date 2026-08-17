@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings version="2">
+    <section id="plugin.video.vstreamlists">
+        <category id="general" label="30200">
+            <group id="1">
+                <setting id="tmdb_api_key" type="string" label="30201">
+                    <level>0</level>
+                    <default></default>
+                    <control type="edit" format="string">
+                        <heading>30201</heading>
+                    </control>
+                </setting>
+                <setting id="metadata_language" type="string" label="30202">
+                    <level>0</level>
+                    <default>fr-FR</default>
+                    <constraints>
+                        <options>
+                            <option label="Francais">fr-FR</option>
+                            <option label="English">en-US</option>
+                        </options>
+                    </constraints>
+                    <control type="list" format="string"/>
+                </setting>
+                <setting id="cache_duration" type="integer" label="30203">
+                    <level>0</level>
+                    <default>72</default>
+                    <constraints>
+                        <minimum>6</minimum>
+                        <maximum>720</maximum>
+                        <step>6</step>
+                    </constraints>
+                    <control type="slider" format="integer">
+                        <popup>true</popup>
+                    </control>
+                </setting>
+            </group>
+        </category>
+        <category id="display" label="30210">
+            <group id="1">
+                <setting id="show_item_count" type="boolean" label="30211">
+                    <level>0</level>
+                    <default>true</default>
+                    <control type="toggle"/>
+                </setting>
+            </group>
+        </category>
+        <category id="advanced" label="30220">
+            <group id="1">
+                <setting id="debug_logging" type="boolean" label="30221">
+                    <level>0</level>
+                    <default>false</default>
+                    <control type="toggle"/>
+                </setting>
+            </group>
+        </category>
+    </section>
+</settings>
