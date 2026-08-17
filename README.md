@@ -1,4 +1,10 @@
-# vStream Listes - depot Kodi
+# KodiLists
+
+Extension Kodi indépendante compatible avec vStream, dédiée à la création et
+à la gestion de listes personnalisées de films et séries via TMDB et la
+source Pastebin de vStream, sans Trakt.
+
+## vStream Listes - depot Kodi
 
 Ce depot heberge le code source de **vStream Listes**
 (`plugin.video.vstreamlists`) ainsi que son propre depot Kodi
