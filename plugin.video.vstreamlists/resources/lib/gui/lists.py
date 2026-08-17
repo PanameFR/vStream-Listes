@@ -9,6 +9,7 @@ from resources.lib.tmdb.client import TmdbClient
 
 
 def _url(base_url, **params):
+    params = {k: v for k, v in params.items() if v is not None}
     return base_url + "?" + urllib.parse.urlencode(params)
 
 
@@ -30,6 +31,7 @@ def render(base_url, handle, list_id, lists_manager):
             li = xbmcgui.ListItem(label="movie/%s" % tmdb_id if media_type == "movie" else "tv/%s" % tmdb_id)
 
         common = dict(list_id=list_id, media_type=media_type, tmdb_id=tmdb_id)
+        common_with_hints = dict(common, title=item.get("title"), smedia=item.get("smedia"))
 
         if vstream_ok:
             # Point the item straight at vStream's own directory - Kodi
@@ -38,12 +40,14 @@ def render(base_url, handle, list_id, lists_manager):
                 poster_url = TmdbClient.image_url(item.get("poster_path"))
                 target_url = adapter.movie_url(tmdb_id, title=item.get("title"), poster_url=poster_url)
             else:
-                target_url = adapter.tvshow_url(tmdb_id)
+                target_url = adapter.tvshow_url(
+                    tmdb_id, title=item.get("title"), smedia=item.get("smedia")
+                )
             play_command = "Container.Update(%s)" % target_url
         else:
             # No vStream installed: keep the item local and only surface
             # the warning when the user actually tries to play something.
-            target_url = _url(base_url, action="open", **common)
+            target_url = _url(base_url, action="open", **common_with_hints)
             play_command = "RunPlugin(%s)" % target_url
 
         commands = [

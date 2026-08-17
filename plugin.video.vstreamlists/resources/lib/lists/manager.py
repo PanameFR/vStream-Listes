@@ -155,7 +155,7 @@ class ListsManager(object):
                 """
                 SELECT i.id AS item_id, i.list_id, i.media_type, i.tmdb_id, i.position,
                        m.title, m.original_title, m.year, m.overview, m.poster_path,
-                       m.backdrop_path, m.genres, m.runtime, m.rating
+                       m.backdrop_path, m.genres, m.runtime, m.rating, m.smedia
                 FROM list_items i
                 LEFT JOIN media m ON m.media_type = i.media_type AND m.tmdb_id = i.tmdb_id
                 WHERE i.list_id = ?

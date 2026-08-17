@@ -6,6 +6,7 @@ from resources.lib.adapters.vstream import VStreamPastebinAdapter
 
 
 def _url(base_url, **params):
+    params = {k: v for k, v in params.items() if v is not None}
     return base_url + "?" + urllib.parse.urlencode(params)
 
 
@@ -23,7 +24,14 @@ def render(base_url, handle, listing, query):
         tmdb_id = adapter.extract_tmdb_id(item_url)
         media_type = adapter.extract_media_type(item_url)
         if tmdb_id and media_type:
-            add_url = _url(base_url, action="add_search_result", media_type=media_type, tmdb_id=tmdb_id)
+            smedia = adapter.extract_smedia(item_url)
+            add_url = _url(
+                base_url,
+                action="add_search_result",
+                media_type=media_type,
+                tmdb_id=tmdb_id,
+                smedia=smedia,
+            )
             # replaceItems defaults to False: this only adds to whatever context items vStream
             # itself may already have put on the item, it doesn't remove them.
             list_item.addContextMenuItems([("Ajouter a une liste", "RunPlugin(%s)" % add_url)])

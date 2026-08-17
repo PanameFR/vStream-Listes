@@ -159,6 +159,7 @@ def action_search_pastebin_prompt():
 def action_add_search_result():
     media_type = PARAMS.get("media_type")
     tmdb_id = _int(PARAMS.get("tmdb_id"))
+    smedia = PARAMS.get("smedia")
 
     target = dialogs.choose_list(LISTS.get_lists(), heading="Ajouter a une liste")
     if target is None:
@@ -174,6 +175,10 @@ def action_add_search_result():
     client = _tmdb_client()
     if client.has_api_key():
         MEDIA.ensure_cached(client, media_type, tmdb_id, 0)
+    # Separate from ensure_cached's TMDB-sourced upsert so a missing API
+    # key or an unreachable TMDB never blocks remembering which vStream
+    # category (film/serie/anime/divers) this title came from.
+    MEDIA.set_smedia(media_type, tmdb_id, smedia)
 
     dialogs.notify("vStream Listes", "Ajoute.")
 
@@ -197,13 +202,18 @@ def action_open():
     # gui/lists.py). Re-check in case that has changed since.
     media_type = PARAMS.get("media_type")
     tmdb_id = _int(PARAMS.get("tmdb_id"))
+    title = PARAMS.get("title")
+    smedia = PARAMS.get("smedia")
 
     adapter = VStreamPastebinAdapter()
     ok, message = adapter.check_compatibility()
     if not ok:
         dialogs.notify("vStream Listes", message)
     else:
-        url = adapter.movie_url(tmdb_id) if media_type == "movie" else adapter.tvshow_url(tmdb_id)
+        if media_type == "movie":
+            url = adapter.movie_url(tmdb_id, title=title)
+        else:
+            url = adapter.tvshow_url(tmdb_id, title=title, smedia=smedia)
         xbmc.executebuiltin("Container.Update(%s)" % url)
 
 

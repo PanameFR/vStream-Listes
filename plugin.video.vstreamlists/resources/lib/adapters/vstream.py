@@ -22,9 +22,14 @@ from resources.lib import log
 # and getHosterList() - which showHosters() calls - accepts that same
 # idTMDB filter directly, bypassing its own title/year matching entirely
 # once an id match is found. So for movies we call showHosters directly:
-# one less screen than going through showMovies first. TV shows still go
-# through showMovies -> showSerieSaisons, since picking a season/episode
-# is unavoidable and isn't something we can (or should) skip.
+# one less screen than going through showMovies first.
+#
+# TV shows/animes go one hop further: showSerieSaisons() (which showMovies
+# would otherwise lead to) reads the exact same siteUrl-embedded idTMDB
+# filter itself, so it too can be called directly - skipping the redundant
+# "click the same title again" screen, while still landing on the season
+# list, since picking a season/episode is unavoidable and isn't something
+# we can (or should) skip.
 #
 # getHosterList() requires siteUrl to carry sMedia, idTMDB and sTitle (a
 # plain dict-access, no default - omitting it raises KeyError there), and
@@ -36,11 +41,15 @@ VSTREAM_ADDON_ID = "plugin.video.vstream"
 VSTREAM_PLUGIN_URL = "plugin://%s/" % VSTREAM_ADDON_ID
 PASTEBIN_SITE_IDENTIFIER = "pastebin"
 
-_MEDIA_TYPE_TO_SMEDIA = {"movie": "film", "tv": "serie"}
-# vStream also has "anime", which - like "serie" - goes through season/
-# episode navigation (showSerieSaisons), so we treat it as "tv" when
-# reading it back from a vStream item.
+# vStream's own Pastebin categories. "anime" goes through the same
+# season/episode navigation (showSerieSaisons) as "serie", but the two are
+# distinct catalogs in the Pastebin content itself - a title only ever
+# tagged sMedia=anime won't be found searching under sMedia=serie. We keep
+# both mapped to our own "tv" media_type (TMDB doesn't distinguish them
+# either), but the original category is preserved separately (see
+# MediaManager.set_smedia) so reopening a title searches the right one.
 _SMEDIA_TO_MEDIA_TYPE = {"film": "movie", "serie": "tv", "anime": "tv"}
+DEFAULT_SMEDIA_FOR_TV = "serie"
 
 _TMDB_ID_RE = re.compile(r"(?:sTmdbId|idTMDB)=(\d+)")
 _SMEDIA_RE = re.compile(r"sMedia=([a-zA-Z]+)")
@@ -91,14 +100,22 @@ class VStreamPastebinAdapter(object):
         match = _TMDB_ID_RE.search(unquoted)
         return int(match.group(1)) if match else None
 
-    def extract_media_type(self, path):
+    def extract_smedia(self, path):
+        """The raw vStream category (film/serie/anime/divers), unmapped -
+        see MediaManager.set_smedia for why this is kept separately from
+        extract_media_type()'s movie/tv collapsing.
+        """
         if not path:
             return None
         unquoted = urllib.parse.unquote(path)
         match = _SMEDIA_RE.search(unquoted)
-        if not match:
+        return match.group(1) if match else None
+
+    def extract_media_type(self, path):
+        smedia = self.extract_smedia(path)
+        if not smedia:
             return None
-        return _SMEDIA_TO_MEDIA_TYPE.get(match.group(1))
+        return _SMEDIA_TO_MEDIA_TYPE.get(smedia)
 
     # ---- building vStream URLs ------------------------------------------
 
@@ -130,12 +147,19 @@ class VStreamPastebinAdapter(object):
         log.debug("built vStream route: media_type=movie tmdb_id=%s url=%s" % (tmdb_id, url))
         return url
 
-    def tvshow_url(self, tmdb_id):
-        # Series still need a season/episode picked by the user, so we
-        # only get them as far as vStream's own filtered show listing.
-        site_url = "vstreamlists&sMedia=serie"
+    def tvshow_url(self, tmdb_id, title=None, smedia=None):
+        smedia = smedia or DEFAULT_SMEDIA_FOR_TV
+        title = self._sanitize_title(title)
+        # Same idTMDB-bypasses-title-matching behaviour as getHosterList()
+        # (see module docstring). sMovieTitle is used for the season
+        # labels' display and as vStream's own fallback if idTMDB doesn't
+        # match anything (e.g. content removed from Pastebin since).
+        site_url = "vstreamlists&sMedia=%s&idTMDB=%s" % (smedia, tmdb_id)
         url = self.build_vstream_url(
-            "showMovies", siteUrl=site_url, sTmdbId=str(tmdb_id)
+            "showSerieSaisons", siteUrl=site_url, sMovieTitle=title
         )
-        log.debug("built vStream route: media_type=tv tmdb_id=%s url=%s" % (tmdb_id, url))
+        log.debug(
+            "built vStream route: media_type=tv smedia=%s tmdb_id=%s url=%s"
+            % (smedia, tmdb_id, url)
+        )
         return url

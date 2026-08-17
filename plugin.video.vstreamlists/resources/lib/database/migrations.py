@@ -41,4 +41,10 @@ MIGRATIONS = [
     CREATE INDEX IF NOT EXISTS idx_list_items_list ON list_items(list_id);
     CREATE INDEX IF NOT EXISTS idx_list_items_media ON list_items(media_type, tmdb_id);
     """,
+    # 2: remember vStream's own category (film/serie/anime/divers) a title
+    # was found under, so reopening it later searches the same category
+    # instead of assuming "serie" for every non-movie item - an anime
+    # only ever cataloged under sMedia=anime would otherwise never be
+    # found again once collapsed to our own movie/tv media_type.
+    "ALTER TABLE media ADD COLUMN smedia TEXT;",
 ]

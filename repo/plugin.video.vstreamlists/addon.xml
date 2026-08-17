@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.video.vstreamlists"
        name="vStream Listes"
-       version="0.1.12"
+       version="0.1.13"
        provider-name="jordan.dupuis62">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
@@ -30,7 +30,7 @@
         <platform>all</platform>
         <license>GPL-3.0-only</license>
         <source>https://github.com/PanameFR/vStream-Listes</source>
-        <news>0.1.12: le correctif 0.1.11 n'a pas suffi - ajoute des logs de diagnostic temporaires sur "Ajouter a mes listes" pour identifier la vraie cause</news>
+        <news>0.1.13: series/animes ouvrent desormais directement la liste des saisons (showSerieSaisons) au lieu de repasser par un clic redondant sur le meme titre ; la categorie Pastebin d'origine (serie/anime/divers) est memorisee pour eviter de chercher au mauvais endroit</news>
         <assets>
             <icon>icon-v2.png</icon>
             <fanart>fanart.png</fanart>

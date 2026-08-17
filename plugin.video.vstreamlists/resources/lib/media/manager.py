@@ -26,8 +26,8 @@ class MediaManager(object):
                 INSERT INTO media (
                     media_type, tmdb_id, title, original_title, year, overview,
                     poster_path, backdrop_path, genres, runtime, rating,
-                    metadata_updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    smedia, metadata_updated_at
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(media_type, tmdb_id) DO UPDATE SET
                     title=excluded.title,
                     original_title=excluded.original_title,
@@ -38,6 +38,7 @@ class MediaManager(object):
                     genres=excluded.genres,
                     runtime=excluded.runtime,
                     rating=excluded.rating,
+                    smedia=COALESCE(excluded.smedia, media.smedia),
                     metadata_updated_at=excluded.metadata_updated_at
                 """,
                 (
@@ -52,8 +53,22 @@ class MediaManager(object):
                     genres,
                     media.get("runtime"),
                     media.get("rating"),
+                    media.get("smedia"),
                     now,
                 ),
+            )
+
+    def set_smedia(self, media_type, tmdb_id, smedia):
+        """Records which vStream category (film/serie/anime/divers) this
+        title was found under, without touching any TMDB-sourced field.
+        A no-op if the media row doesn't exist yet or smedia is unknown.
+        """
+        if not smedia:
+            return
+        with self._db.connection() as conn:
+            conn.execute(
+                "UPDATE media SET smedia = ? WHERE media_type = ? AND tmdb_id = ?",
+                (smedia, media_type, tmdb_id),
             )
 
     def get(self, media_type, tmdb_id):

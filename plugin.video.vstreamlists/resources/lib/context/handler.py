@@ -29,6 +29,7 @@ def run(path, title, year, dbtype):
     lists_manager = ListsManager(db)
     media_manager = MediaManager(db)
 
+    smedia = adapter.extract_smedia(path)
     media_type = adapter.extract_media_type(path)
     tmdb_id = adapter.extract_tmdb_id(path)
 
@@ -54,6 +55,7 @@ def run(path, title, year, dbtype):
             media = client.refresh_metadata(media_type, tmdb_id)
         except Exception:
             media = {"media_type": media_type, "tmdb_id": tmdb_id, "title": title, "year": year or None}
+        media["smedia"] = smedia
     else:
         if not title:
             dialogs.notify("vStream Listes", "Impossible d'identifier ce contenu")
@@ -80,6 +82,7 @@ def run(path, title, year, dbtype):
         if not chosen:
             return  # user must pick explicitly, never guess silently
         media = chosen
+        media["smedia"] = smedia or ("film" if media_type == "movie" else "serie")
         tmdb_id = media["tmdb_id"]
 
     target = dialogs.choose_list(lists_manager.get_lists(), heading="Ajouter a mes listes")
