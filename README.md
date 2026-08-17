@@ -25,9 +25,9 @@ Films d'horreur...) directement depuis Kodi.
 Elle **ne modifie jamais vStream** : elle s'appuie simplement dessus pour
 retrouver et lire tes contenus via sa source Pastebin, pendant que **TMDB**
 fournit les affiches, synopsis, notes et années. Pas de compte, pas de
-Trakt, pas de données envoyées ailleurs — tout reste local, dans Kodi.
+Trakt, pas de données envoyées ailleurs : tout reste local, dans Kodi.
 
-vStream lui-même est développé par l'équipe [Kodi-vStream](https://github.com/kodi-vstream/venom-xbmc-addons) —
+vStream lui-même est développé par l'équipe [Kodi-vStream](https://github.com/kodi-vstream/venom-xbmc-addons),
 un immense merci à eux pour leur travail, sans lequel cette extension n'aurait
 pas de raison d'exister.
 
@@ -43,19 +43,19 @@ pas de raison d'exister.
 
 ## 📦 Installation
 
-1. **Ajouter la source** — *Système → Gestionnaire de fichiers → Ajouter une
+1. **Ajouter la source** : *Système → Gestionnaire de fichiers → Ajouter une
    source → Aucun* → saisir :
    ```
    https://PanameFR.github.io/KodiLists/
    ```
-2. **Installer le dépôt** — *Extensions → Installer depuis un fichier zip* →
+2. **Installer le dépôt** : *Extensions → Installer depuis un fichier zip* →
    sélectionner la source ajoutée → `repo/` → `repository.vstreamlists/` →
    le fichier `.zip`.
-3. **Installer l'extension** — *Extensions → Installer depuis un dépôt →
+3. **Installer l'extension** : *Extensions → Installer depuis un dépôt →
    vStream Listes Repository → Extensions vidéo → vStream Listes →
    Installer*.
 
-Les mises à jour suivantes se font automatiquement — plus besoin de repasser
+Les mises à jour suivantes se font automatiquement, plus besoin de repasser
 par un zip.
 
 ## ✅ Prérequis
@@ -64,6 +64,17 @@ par un zip.
   moins une source Pastebin active
 - Une clé API [TMDB](https://www.themoviedb.org/settings/api) (gratuite), à
   renseigner dans les paramètres de vStream Listes
+
+## 🛠️ Support
+
+vStream Listes est un addon gratuit et libre de modification, développé sur
+mon temps bénévole. Les futures mises à jour dépendront des
+[issues](../../issues) ouvertes sur ce dépôt et du temps disponible, sans
+garantie de délai.
+
+Pour tout problème lié à **vStream Listes**, ouvre une issue ici. Merci de
+ne pas contacter l'équipe de vStream à ce sujet, ce projet n'a aucun lien
+avec eux et ils n'ont pas à gérer nos bugs.
 
 ## 📄 Licence & crédits
 
