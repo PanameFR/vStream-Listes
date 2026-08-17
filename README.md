@@ -27,6 +27,10 @@ retrouver et lire tes contenus via sa source Pastebin, pendant que **TMDB**
 fournit les affiches, synopsis, notes et années. Pas de compte, pas de
 Trakt, pas de données envoyées ailleurs — tout reste local, dans Kodi.
 
+vStream lui-même est développé par l'équipe [Kodi-vStream](https://github.com/kodi-vstream/venom-xbmc-addons) —
+un immense merci à eux pour leur travail, sans lequel cette extension n'aurait
+pas de raison d'exister.
+
 ## ✨ Fonctionnalités
 
 - 📂 Créer, renommer, supprimer et réordonner autant de listes que tu veux
@@ -66,3 +70,6 @@ par un zip.
 Distribué sous licence GPL-3.0. S'appuie sur [vStream](https://github.com/Kodi-vStream/venom-xbmc-addons)
 pour la lecture et sur l'API [TMDB](https://www.themoviedb.org/) pour les
 métadonnées. Ce produit utilise l'API TMDB mais n'est ni approuvé ni certifié par TMDB.
+
+Projet non officiel, développé indépendamment : il n'est ni développé, ni
+approuvé, ni maintenu par l'équipe de vStream.
