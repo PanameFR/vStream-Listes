@@ -1,4 +1,3 @@
-import xbmc
 import xbmcaddon
 
 from resources.lib.database.manager import DatabaseManager
@@ -9,14 +8,17 @@ from resources.lib.adapters.vstream import VStreamPastebinAdapter
 from resources.lib.gui import dialogs
 
 
-def run():
+def run(path, title, year, dbtype):
     """Entry point for the 'Ajouter a mes listes' context menu item shown
-    on vStream/Pastebin entries. Never touches vStream itself - only
-    reads the currently focused ListItem's own infolabels.
+    on vStream/Pastebin entries. Never touches vStream itself.
+
+    path/title/year/dbtype are the selected ListItem's own infolabels, read
+    by context.py before anything else - see its comment for why that
+    ordering matters (the container's focus can drift while this module's
+    own imports are still loading, otherwise).
     """
     adapter = VStreamPastebinAdapter()
 
-    path = xbmc.getInfoLabel("ListItem.FolderPath") or xbmc.getInfoLabel("ListItem.Path")
     if not adapter.is_pastebin_item(path):
         dialogs.notify("vStream Listes", "Cet element ne provient pas de la source Pastebin de vStream")
         return
@@ -28,9 +30,6 @@ def run():
 
     media_type = adapter.extract_media_type(path)
     tmdb_id = adapter.extract_tmdb_id(path)
-
-    title = xbmc.getInfoLabel("ListItem.Title") or xbmc.getInfoLabel("ListItem.Label")
-    year = xbmc.getInfoLabel("ListItem.Year")
 
     client = TmdbClient(
         addon.getSetting("tmdb_api_key"),
@@ -54,8 +53,7 @@ def run():
             return
 
         if not media_type:
-            choice = xbmc.getInfoLabel("ListItem.DBTYPE")
-            media_type = "tv" if choice == "tvshow" else "movie"
+            media_type = "tv" if dbtype == "tvshow" else "movie"
 
         if not client.has_api_key():
             dialogs.notify("vStream Listes", "Aucune cle API TMDB configuree")

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.video.vstreamlists"
        name="vStream Listes"
-       version="0.1.10"
+       version="0.1.11"
        provider-name="jordan.dupuis62">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
@@ -30,7 +30,7 @@
         <platform>all</platform>
         <license>GPL-3.0-only</license>
         <source>https://github.com/PanameFR/vStream-Listes</source>
-        <news>0.1.10: vrai fanart (l'ancien etait un simple carre de couleur uni)</news>
+        <news>0.1.11: corrige "Ajouter a mes listes" qui pouvait ajouter le mauvais film/serie (le focus de la liste pouvait changer pendant le chargement du menu contextuel)</news>
         <assets>
             <icon>icon-v2.png</icon>
             <fanart>fanart.png</fanart>
