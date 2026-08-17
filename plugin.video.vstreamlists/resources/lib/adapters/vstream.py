@@ -1,7 +1,6 @@
 import re
 import urllib.parse
 
-import xbmc
 import xbmcaddon
 
 from resources.lib import log
@@ -97,8 +96,7 @@ class VStreamPastebinAdapter(object):
         query.update({k: v for k, v in params.items() if v is not None})
         return VSTREAM_PLUGIN_URL + "?" + urllib.parse.urlencode(query)
 
-    def _open(self, media_type, tmdb_id):
-        log.debug("open requested: media_type=%s tmdb_id=%s" % (media_type, tmdb_id))
+    def _media_url(self, media_type, tmdb_id):
         smedia = _MEDIA_TYPE_TO_SMEDIA[media_type]
         # siteUrl must contain a '&' for pastebin.py to split it into a
         # prefix (unused) and a params dict; we only care about sMedia
@@ -108,11 +106,11 @@ class VStreamPastebinAdapter(object):
         url = self.build_vstream_url(
             "showMovies", siteUrl=site_url, sTmdbId=str(tmdb_id)
         )
-        log.debug("calling vStream route: %s" % url)
-        xbmc.executebuiltin("Container.Update(%s)" % url)
+        log.debug("built vStream route: media_type=%s tmdb_id=%s url=%s" % (media_type, tmdb_id, url))
+        return url
 
-    def open_movie(self, tmdb_id):
-        self._open("movie", tmdb_id)
+    def movie_url(self, tmdb_id):
+        return self._media_url("movie", tmdb_id)
 
-    def open_tvshow(self, tmdb_id):
-        self._open("tv", tmdb_id)
+    def tvshow_url(self, tmdb_id):
+        return self._media_url("tv", tmdb_id)

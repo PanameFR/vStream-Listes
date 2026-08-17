@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.video.vstreamlists"
        name="vStream Listes"
-       version="0.1.1"
+       version="0.1.2"
        provider-name="jordan.dupuis62">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
@@ -30,7 +30,7 @@
         <platform>all</platform>
         <license>GPL-3.0-only</license>
         <source>https://github.com/PanameFR/KodiLists</source>
-        <news>0.1.1: correction des parametres (cle API TMDB invisible) et des traductions francaises</news>
+        <news>0.1.2: correction de l'ouverture d'un film/serie (l'item pointe desormais directement vers vStream au lieu de repasser par notre propre plugin, qui provoquait un retour immediat a la liste)</news>
         <assets>
             <icon>icon.png</icon>
             <fanart>fanart.png</fanart>

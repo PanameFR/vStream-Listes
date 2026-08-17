@@ -4,6 +4,7 @@ import xbmcgui
 import xbmcplugin
 
 from resources.lib.gui.media import build_list_item
+from resources.lib.adapters.vstream import VStreamPastebinAdapter
 
 
 def _url(base_url, **params):
@@ -12,6 +13,9 @@ def _url(base_url, **params):
 
 def render(base_url, handle, list_id, lists_manager):
     xbmcplugin.setContent(handle, "videos")
+
+    adapter = VStreamPastebinAdapter()
+    vstream_ok, vstream_error = adapter.check_compatibility()
 
     for entry in ("Ajouter un film", "Ajouter une serie"):
         media_type = "movie" if "film" in entry else "tv"
@@ -37,11 +41,19 @@ def render(base_url, handle, list_id, lists_manager):
 
         common = dict(list_id=list_id, media_type=media_type, tmdb_id=tmdb_id)
 
+        if vstream_ok:
+            # Point the item straight at vStream's own directory - Kodi
+            # navigates into it natively, no redirect through our plugin.
+            target_url = adapter.movie_url(tmdb_id) if media_type == "movie" else adapter.tvshow_url(tmdb_id)
+            play_command = "Container.Update(%s)" % target_url
+        else:
+            # No vStream installed: keep the item local and only surface
+            # the warning when the user actually tries to play something.
+            target_url = _url(base_url, action="open", **common)
+            play_command = "RunPlugin(%s)" % target_url
+
         commands = [
-            (
-                "Lire avec vStream / Pastebin",
-                "RunPlugin(%s)" % _url(base_url, action="open", **common),
-            ),
+            ("Lire avec vStream / Pastebin", play_command),
             (
                 "Ajouter a une autre liste",
                 "RunPlugin(%s)" % _url(base_url, action="copy_item", **common),
@@ -77,11 +89,10 @@ def render(base_url, handle, list_id, lists_manager):
         ]
         li.addContextMenuItems(commands)
 
-        xbmcplugin.addDirectoryItem(
-            handle,
-            _url(base_url, action="open", **common),
-            li,
-            isFolder=True,
-        )
+        # When vStream is missing, the item's own URL runs our "open"
+        # action as a plain (non-directory) invocation - same pattern as
+        # the "+ Ajouter..." entries above - so it just shows the warning
+        # instead of leaving Kodi waiting on a directory listing.
+        xbmcplugin.addDirectoryItem(handle, target_url, li, isFolder=vstream_ok)
 
     xbmcplugin.endOfDirectory(handle)

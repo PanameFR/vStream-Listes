@@ -3,7 +3,6 @@ import urllib.parse
 
 import xbmc
 import xbmcaddon
-import xbmcplugin
 
 from resources.lib.database.manager import DatabaseManager
 from resources.lib.lists.manager import ListsManager
@@ -190,6 +189,9 @@ def action_refresh_metadata():
 
 
 def action_open():
+    # Reached only when vStream wasn't installed at render time (the list
+    # otherwise points items straight at vStream's own directory - see
+    # gui/lists.py). Re-check in case that has changed since.
     media_type = PARAMS.get("media_type")
     tmdb_id = _int(PARAMS.get("tmdb_id"))
 
@@ -198,15 +200,8 @@ def action_open():
     if not ok:
         dialogs.notify("vStream Listes", message)
     else:
-        if media_type == "movie":
-            adapter.open_movie(tmdb_id)
-        else:
-            adapter.open_tvshow(tmdb_id)
-
-    try:
-        xbmcplugin.endOfDirectory(HANDLE, succeeded=False, cacheToDisc=False)
-    except Exception:
-        pass
+        url = adapter.movie_url(tmdb_id) if media_type == "movie" else adapter.tvshow_url(tmdb_id)
+        xbmc.executebuiltin("Container.Update(%s)" % url)
 
 
 # ---- directory rendering --------------------------------------------------
