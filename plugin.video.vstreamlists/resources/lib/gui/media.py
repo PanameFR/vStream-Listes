@@ -3,16 +3,21 @@ import xbmcgui
 from resources.lib.tmdb.client import TmdbClient
 
 
-def build_list_item(media):
-    title = media.get("title") or "?"
-    li = xbmcgui.ListItem(label=title)
+def enrich_list_item(li, media):
+    """Sets TMDB-sourced info/art (plot, poster, rating...) on an existing
+    ListItem, without touching its label - used both for our own list
+    items and for vStream's own search-result items, which carry a title
+    but no metadata of their own (see gui/search.py).
+    """
+    title = media.get("title")
 
     info = {
-        "title": title,
-        "originaltitle": media.get("original_title") or title,
         "plot": media.get("overview") or "",
         "mediatype": "movie" if media.get("media_type") == "movie" else "tvshow",
     }
+    if title:
+        info["title"] = title
+        info["originaltitle"] = media.get("original_title") or title
     if media.get("year"):
         try:
             info["year"] = int(media["year"])
@@ -39,3 +44,8 @@ def build_list_item(media):
         li.setArt(art)
 
     return li
+
+
+def build_list_item(media):
+    li = xbmcgui.ListItem(label=media.get("title") or "?")
+    return enrich_list_item(li, media)

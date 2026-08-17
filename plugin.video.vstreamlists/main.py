@@ -251,7 +251,10 @@ def render_search():
         dialogs.notify("vStream Listes", "La recherche Pastebin a echoue.")
         search_gui.render(BASE_URL, HANDLE, [], query)
         return
-    search_gui.render(BASE_URL, HANDLE, listing, query)
+    search_gui.render(
+        BASE_URL, HANDLE, listing, query,
+        tmdb_client=_tmdb_client(), media_manager=MEDIA, cache_ttl=_cache_ttl_seconds(),
+    )
 
 
 ACTIONS = {
