@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="plugin.video.vstreamlists/icon.png" width="140" alt="vStream Listes">
+  <img src="plugin.video.vstreamlists/icon-v2.png" width="140" alt="vStream Listes">
 </p>
 
 <h1 align="center">vStream Listes</h1>
@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-  <img alt="Version extension" src="https://img.shields.io/badge/vStream%20Listes-0.1.7-2ea3f2">
-  <img alt="Version depot" src="https://img.shields.io/badge/Repository-1.0.2-2ea3f2">
+  <img alt="Version extension" src="https://img.shields.io/badge/vStream%20Listes-0.1.8-2ea3f2">
+  <img alt="Version depot" src="https://img.shields.io/badge/Repository-1.0.3-2ea3f2">
   <img alt="Licence" src="https://img.shields.io/badge/licence-GPL--3.0-lightgrey">
 </p>
 

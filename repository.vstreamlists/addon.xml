@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="repository.vstreamlists"
        name="vStream Listes Repository"
-       version="1.0.2"
+       version="1.0.3"
        provider-name="jordan.dupuis62">
     <extension point="xbmc.addon.repository" name="vStream Listes Repository">
         <dir>
@@ -19,7 +19,7 @@
         <platform>all</platform>
         <license>GPL-3.0-only</license>
         <assets>
-            <icon>icon.png</icon>
+            <icon>icon-v2.png</icon>
         </assets>
     </extension>
 </addon>

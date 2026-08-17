@@ -85,7 +85,7 @@ def main():
 
         zip_addon(addon_id, addon_dir, version, dest_dir)
 
-        for extra in ("addon.xml", "icon.png", "fanart.png"):
+        for extra in ("addon.xml", "icon.png", "icon-v2.png", "fanart.png"):
             src = os.path.join(addon_dir, extra)
             if os.path.isfile(src):
                 shutil.copy2(src, dest_dir)

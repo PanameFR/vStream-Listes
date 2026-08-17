@@ -1,7 +1,7 @@
 <addons>
 <addon id="plugin.video.vstreamlists"
        name="vStream Listes"
-       version="0.1.7"
+       version="0.1.8"
        provider-name="jordan.dupuis62">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
@@ -30,16 +30,16 @@
         <platform>all</platform>
         <license>GPL-3.0-only</license>
         <source>https://github.com/PanameFR/vStream-Listes</source>
-        <news>0.1.7: depot GitHub renomme en PanameFR/vStream-Listes, mise a jour du lien source</news>
+        <news>0.1.8: icone renommee (icon-v2.png) pour forcer Kodi a rafraichir son cache de textures, l'ancienne icone y restait bloquee malgre les mises a jour</news>
         <assets>
-            <icon>icon.png</icon>
+            <icon>icon-v2.png</icon>
             <fanart>fanart.png</fanart>
         </assets>
     </extension>
 </addon>
 <addon id="repository.vstreamlists"
        name="vStream Listes Repository"
-       version="1.0.2"
+       version="1.0.3"
        provider-name="jordan.dupuis62">
     <extension point="xbmc.addon.repository" name="vStream Listes Repository">
         <dir>
@@ -57,7 +57,7 @@
         <platform>all</platform>
         <license>GPL-3.0-only</license>
         <assets>
-            <icon>icon.png</icon>
+            <icon>icon-v2.png</icon>
         </assets>
     </extension>
 </addon>
