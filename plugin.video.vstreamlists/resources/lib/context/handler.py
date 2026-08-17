@@ -1,3 +1,4 @@
+import xbmc
 import xbmcaddon
 
 from resources.lib.database.manager import DatabaseManager
@@ -30,6 +31,12 @@ def run(path, title, year, dbtype):
 
     media_type = adapter.extract_media_type(path)
     tmdb_id = adapter.extract_tmdb_id(path)
+
+    xbmc.log(
+        "[vstreamlists] handler.run: path=%r title=%r -> media_type=%r tmdb_id=%r"
+        % (path, title, media_type, tmdb_id),
+        xbmc.LOGINFO,
+    )
 
     client = TmdbClient(
         addon.getSetting("tmdb_api_key"),
@@ -83,6 +90,12 @@ def run(path, title, year, dbtype):
         if not name:
             return
         target = lists_manager.create_list(name)
+
+    xbmc.log(
+        "[vstreamlists] handler.run: adding media_type=%r tmdb_id=%r title=%r to list_id=%r"
+        % (media_type, tmdb_id, media.get("title") if media else title, target),
+        xbmc.LOGINFO,
+    )
 
     if media:
         media_manager.upsert(media)

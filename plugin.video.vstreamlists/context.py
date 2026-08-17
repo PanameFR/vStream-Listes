@@ -10,6 +10,17 @@ _TITLE = xbmc.getInfoLabel("ListItem.Title") or xbmc.getInfoLabel("ListItem.Labe
 _YEAR = xbmc.getInfoLabel("ListItem.Year")
 _DBTYPE = xbmc.getInfoLabel("ListItem.DBTYPE")
 
+# Temporary unconditional diagnostic logging (not gated by the addon's own
+# debug_logging setting, so it shows up as long as Kodi's own debug logging
+# is on) - to pin down exactly what context.py sees vs. what the user
+# actually clicked, since the fix in 0.1.11 didn't resolve the wrong-item
+# reports. Remove once the real cause is confirmed.
+xbmc.log(
+    "[vstreamlists] context.py captured: path=%r title=%r year=%r dbtype=%r"
+    % (_PATH, _TITLE, _YEAR, _DBTYPE),
+    xbmc.LOGINFO,
+)
+
 from resources.lib.context.handler import run
 
 if __name__ == "__main__":
