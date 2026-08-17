@@ -30,7 +30,7 @@ il n'y a pas d'automatisation CI pour l'instant.
 
 1. **Ajouter la source** : Systeme -> Gestionnaire de fichiers -> Ajouter une
    source -> Aucun -> saisir
-   `https://GITHUB_USER.github.io/REPO_NAME/` (nommer par ex. "repo vstreamlists").
+   `https://PanameFR.github.io/KodiLists/` (nommer par ex. "repo vstreamlists").
 2. **Installer le depot** : Extensions -> Installer depuis un fichier zip ->
    choisir la source ajoutee -> `repo/repository.vstreamlists/repository.vstreamlists-1.0.0.zip`.
 3. **Installer l'extension** : Extensions -> Installer depuis un depot ->
@@ -41,9 +41,4 @@ Les mises a jour futures sont ensuite automatiques (Kodi interroge
 `addons.xml` / `addons.xml.md5` via `raw.githubusercontent.com`, comme le
 fait `repository.vstream` pour vStream).
 
-## A faire pour publier
-
-`GITHUB_USER` et `REPO_NAME` ci-dessus (et dans
-`repository.vstreamlists/addon.xml`) sont des valeurs a remplacer une fois
-le depot GitHub cree, puis GitHub Pages a activer sur la branche `main`
-(racine).
+Depot : https://github.com/PanameFR/KodiLists

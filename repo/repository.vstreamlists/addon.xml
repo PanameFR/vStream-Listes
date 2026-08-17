@@ -5,9 +5,9 @@
        provider-name="jordan.dupuis62">
     <extension point="xbmc.addon.repository" name="vStream Listes Repository">
         <dir>
-            <info compressed="false">https://raw.githubusercontent.com/GITHUB_USER/REPO_NAME/main/addons.xml</info>
-            <checksum>https://raw.githubusercontent.com/GITHUB_USER/REPO_NAME/main/addons.xml.md5</checksum>
-            <datadir zip="true">https://raw.githubusercontent.com/GITHUB_USER/REPO_NAME/main/repo</datadir>
+            <info compressed="false">https://raw.githubusercontent.com/PanameFR/KodiLists/main/addons.xml</info>
+            <checksum>https://raw.githubusercontent.com/PanameFR/KodiLists/main/addons.xml.md5</checksum>
+            <datadir zip="true">https://raw.githubusercontent.com/PanameFR/KodiLists/main/repo</datadir>
         </dir>
     </extension>
 
