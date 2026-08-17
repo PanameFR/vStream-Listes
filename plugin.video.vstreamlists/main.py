@@ -9,7 +9,9 @@ from resources.lib.lists.manager import ListsManager
 from resources.lib.media.manager import MediaManager
 from resources.lib.tmdb.client import TmdbClient
 from resources.lib.adapters.vstream import VStreamPastebinAdapter
-from resources.lib.gui import home, lists as lists_gui, dialogs
+from resources.lib.adapters import vstream_bridge
+from resources.lib.gui import home, lists as lists_gui, search as search_gui, dialogs
+from resources.lib import log
 
 ADDON = xbmcaddon.Addon()
 BASE_URL = sys.argv[0]
@@ -147,6 +149,35 @@ def action_copy_item():
     _refresh()
 
 
+def action_search_pastebin_prompt():
+    query = dialogs.ask_text("Rechercher dans Pastebin (tous medias)")
+    if query:
+        url = "%s?%s" % (BASE_URL, urllib.parse.urlencode({"action": "search_pastebin", "query": query}))
+        xbmc.executebuiltin("Container.Update(%s)" % url)
+
+
+def action_add_search_result():
+    media_type = PARAMS.get("media_type")
+    tmdb_id = _int(PARAMS.get("tmdb_id"))
+
+    target = dialogs.choose_list(LISTS.get_lists(), heading="Ajouter a une liste")
+    if target is None:
+        return
+    if target == "__create__":
+        name = dialogs.ask_text("Nom de la nouvelle liste")
+        if not name:
+            return
+        target = LISTS.create_list(name)
+
+    LISTS.add_item(target, media_type, tmdb_id)
+
+    client = _tmdb_client()
+    if client.has_api_key():
+        MEDIA.ensure_cached(client, media_type, tmdb_id, 0)
+
+    dialogs.notify("vStream Listes", "Ajoute.")
+
+
 def action_refresh_metadata():
     media_type = PARAMS.get("media_type")
     tmdb_id = _int(PARAMS.get("tmdb_id"))
@@ -193,6 +224,26 @@ def render_list():
     lists_gui.render(BASE_URL, HANDLE, list_id, LISTS)
 
 
+def render_search():
+    query = PARAMS.get("query")
+    if not query:
+        dialogs.notify("vStream Listes", "Recherche vide.")
+        search_gui.render(BASE_URL, HANDLE, [], query)
+        return
+    try:
+        listing = vstream_bridge.search_all_categories(query)
+    except RuntimeError as exc:
+        dialogs.notify("vStream Listes", str(exc))
+        search_gui.render(BASE_URL, HANDLE, [], query)
+        return
+    except Exception as exc:
+        log.error("render_search: unexpected failure: %s" % exc)
+        dialogs.notify("vStream Listes", "La recherche Pastebin a echoue.")
+        search_gui.render(BASE_URL, HANDLE, [], query)
+        return
+    search_gui.render(BASE_URL, HANDLE, listing, query)
+
+
 ACTIONS = {
     None: render_home,
     "create_list": action_create_list,
@@ -200,6 +251,9 @@ ACTIONS = {
     "delete_list": action_delete_list,
     "move_list": action_move_list,
     "show_list": render_list,
+    "search_pastebin_prompt": action_search_pastebin_prompt,
+    "search_pastebin": render_search,
+    "add_search_result": action_add_search_result,
     "remove_item": action_remove_item,
     "reorder_item": action_reorder_item,
     "move_item": action_move_item,

@@ -17,6 +17,12 @@ def render(base_url, handle, lists_manager, show_count=True):
         handle, _url(base_url, action="create_list"), li, isFolder=False
     )
 
+    li = xbmcgui.ListItem(label="Rechercher dans Pastebin")
+    li.setArt({"icon": "DefaultAddonsSearch.png"})
+    xbmcplugin.addDirectoryItem(
+        handle, _url(base_url, action="search_pastebin_prompt"), li, isFolder=False
+    )
+
     for lst in lists_manager.get_lists():
         label = lst["name"]
         if show_count:

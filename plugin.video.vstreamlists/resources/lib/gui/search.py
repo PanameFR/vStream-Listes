@@ -1,0 +1,37 @@
+import urllib.parse
+
+import xbmcplugin
+
+from resources.lib.adapters.vstream import VStreamPastebinAdapter
+
+
+def _url(base_url, **params):
+    return base_url + "?" + urllib.parse.urlencode(params)
+
+
+def render(base_url, handle, listing, query):
+    """Renders a search's results as a plain Kodi directory - nothing here is saved anywhere:
+    it exists only for this one listing, exactly like browsing vStream itself would. Adding an
+    item to one of the user's own lists is still available per-item (see the context menu
+    added below), but the results themselves aren't a list and leave nothing behind once the
+    user navigates away."""
+    xbmcplugin.setContent(handle, "videos")
+    xbmcplugin.setPluginCategory(handle, 'Recherche Pastebin : "%s"' % query if query else "Recherche Pastebin")
+
+    adapter = VStreamPastebinAdapter()
+    for item_url, list_item, is_folder in listing:
+        tmdb_id = adapter.extract_tmdb_id(item_url)
+        media_type = adapter.extract_media_type(item_url)
+        if tmdb_id and media_type:
+            add_url = _url(base_url, action="add_search_result", media_type=media_type, tmdb_id=tmdb_id)
+            # replaceItems defaults to False: this only adds to whatever context items vStream
+            # itself may already have put on the item, it doesn't remove them.
+            list_item.addContextMenuItems([("Ajouter a une liste", "RunPlugin(%s)" % add_url)])
+
+        xbmcplugin.addDirectoryItem(handle, item_url, list_item, isFolder=is_folder)
+
+    if not listing:
+        xbmcplugin.endOfDirectory(handle, succeeded=False, cacheToDisc=False)
+        return
+
+    xbmcplugin.endOfDirectory(handle, cacheToDisc=False)
