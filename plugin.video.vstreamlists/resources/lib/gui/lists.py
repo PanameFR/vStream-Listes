@@ -18,17 +18,6 @@ def render(base_url, handle, list_id, lists_manager):
     adapter = VStreamPastebinAdapter()
     vstream_ok, vstream_error = adapter.check_compatibility()
 
-    for entry in ("Ajouter un film", "Ajouter une serie"):
-        media_type = "movie" if "film" in entry else "tv"
-        li = xbmcgui.ListItem(label="+ %s" % entry)
-        li.setArt({"icon": "DefaultAddSource.png"})
-        xbmcplugin.addDirectoryItem(
-            handle,
-            _url(base_url, action="add_media", list_id=list_id, media_type=media_type),
-            li,
-            isFolder=False,
-        )
-
     items = lists_manager.get_items(list_id)
     for item in items:
         media_type = item["media_type"]
@@ -95,9 +84,9 @@ def render(base_url, handle, list_id, lists_manager):
         li.addContextMenuItems(commands)
 
         # When vStream is missing, the item's own URL runs our "open"
-        # action as a plain (non-directory) invocation - same pattern as
-        # the "+ Ajouter..." entries above - so it just shows the warning
-        # instead of leaving Kodi waiting on a directory listing.
+        # action as a plain (non-directory) invocation, so it just shows
+        # the warning instead of leaving Kodi waiting on a directory
+        # listing.
         xbmcplugin.addDirectoryItem(handle, target_url, li, isFolder=vstream_ok)
 
     xbmcplugin.endOfDirectory(handle)

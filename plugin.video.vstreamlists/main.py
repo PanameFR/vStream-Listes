@@ -92,34 +92,6 @@ def action_move_list():
 # ---- media in a list -----------------------------------------------------
 
 
-def action_add_media():
-    list_id = _int(PARAMS.get("list_id"))
-    media_type = PARAMS.get("media_type")
-
-    query = dialogs.ask_text("Rechercher un %s" % ("film" if media_type == "movie" else "serie"))
-    if not query:
-        return
-
-    client = _tmdb_client()
-    if not client.has_api_key():
-        dialogs.notify("vStream Listes", "Aucune cle API TMDB configuree")
-        return
-
-    try:
-        results = client.search_movie(query) if media_type == "movie" else client.search_tv(query)
-    except Exception:
-        dialogs.notify("vStream Listes", "TMDB est actuellement inaccessible")
-        return
-
-    chosen = dialogs.choose_tmdb_result(results, media_type)
-    if not chosen:
-        return
-
-    MEDIA.upsert(chosen)
-    LISTS.add_item(list_id, media_type, chosen["tmdb_id"])
-    _refresh()
-
-
 def action_remove_item():
     LISTS.remove_item(
         _int(PARAMS.get("list_id")), PARAMS.get("media_type"), _int(PARAMS.get("tmdb_id"))
@@ -228,7 +200,6 @@ ACTIONS = {
     "delete_list": action_delete_list,
     "move_list": action_move_list,
     "show_list": render_list,
-    "add_media": action_add_media,
     "remove_item": action_remove_item,
     "reorder_item": action_reorder_item,
     "move_item": action_move_item,
