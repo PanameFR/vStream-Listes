@@ -38,7 +38,8 @@ il n'y a pas d'automatisation CI pour l'instant.
    source -> Aucun -> saisir
    `https://PanameFR.github.io/KodiLists/` (nommer par ex. "repo vstreamlists").
 2. **Installer le depot** : Extensions -> Installer depuis un fichier zip ->
-   choisir la source ajoutee -> `repo/repository.vstreamlists/repository.vstreamlists-1.0.0.zip`.
+   choisir la source ajoutee -> `repo/` -> `repository.vstreamlists/` -> le
+   seul fichier `.zip` present (son numero de version peut changer).
 3. **Installer l'extension** : Extensions -> Installer depuis un depot ->
    "vStream Listes Repository" -> Extensions video -> vStream Listes ->
    Installer.

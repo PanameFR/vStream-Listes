@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="plugin.video.vstreamlists"
        name="vStream Listes"
-       version="0.1.5"
+       version="0.1.6"
        provider-name="jordan.dupuis62">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
@@ -30,7 +30,7 @@
         <platform>all</platform>
         <license>GPL-3.0-only</license>
         <source>https://github.com/PanameFR/KodiLists</source>
-        <news>0.1.5: retrait des boutons "Ajouter un film/serie" (recherche TMDB manuelle) des listes, l'ajout se fait desormais depuis vStream via "Ajouter a mes listes"</news>
+        <news>0.1.6: ajout d'une vraie icone (fournie par l'utilisateur), remplace le carre de couleur precedent</news>
         <assets>
             <icon>icon.png</icon>
             <fanart>fanart.png</fanart>
