@@ -1,7 +1,7 @@
 <addons>
 <addon id="plugin.video.vstreamlists"
        name="vStream Listes"
-       version="0.1.0"
+       version="0.1.1"
        provider-name="jordan.dupuis62">
     <requires>
         <import addon="xbmc.python" version="3.0.0"/>
@@ -29,8 +29,8 @@
         </description>
         <platform>all</platform>
         <license>GPL-3.0-only</license>
-        <source>https://github.com/</source>
-        <news>Version initiale 0.1.0</news>
+        <source>https://github.com/PanameFR/KodiLists</source>
+        <news>0.1.1: correction des parametres (cle API TMDB invisible) et des traductions francaises</news>
         <assets>
             <icon>icon.png</icon>
             <fanart>fanart.png</fanart>

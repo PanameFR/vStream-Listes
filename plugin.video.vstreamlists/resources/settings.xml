@@ -6,6 +6,9 @@
                 <setting id="tmdb_api_key" type="string" label="30201">
                     <level>0</level>
                     <default></default>
+                    <constraints>
+                        <allowempty>true</allowempty>
+                    </constraints>
                     <control type="edit" format="string">
                         <heading>30201</heading>
                     </control>
