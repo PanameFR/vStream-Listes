@@ -37,6 +37,8 @@ pas de raison d'exister.
 - 🎞️ Ajouter un film ou une série **directement depuis vStream**, via
   "Ajouter à mes listes" dans son menu contextuel
 - 🔀 Déplacer ou copier un contenu d'une liste à une autre
+- 🔎 Recherche directe dans la source Pastebin de vStream (films, séries,
+  animes, divers en une seule liste), avec ajout à une liste en un clic
 - 🖼️ Affiches, synopsis, année, genres et note TMDB pour chaque titre
 - ▶️ Un clic pour lancer la lecture via vStream / Pastebin
 - 🔁 Mises à jour automatiques une fois le dépôt installé
