@@ -67,6 +67,32 @@ def build_directory_listing(dir_path, title, entries):
         f.write(html)
 
 
+def update_readme_badges(versions):
+    """Keeps the version badges in README.md in sync with addon.xml automatically - these are
+    plain hardcoded shields.io URLs, easy to bump one and forget the other by hand."""
+    readme_path = os.path.join(ROOT, "README.md")
+    if not os.path.isfile(readme_path):
+        return
+    with open(readme_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    badge_labels = {
+        "plugin.video.vstreamlists": "vStream%20Listes",
+        "repository.vstreamlists": "Repository",
+    }
+    for addon_id, label in badge_labels.items():
+        if addon_id not in versions:
+            continue
+        content = re.sub(
+            r"(img\.shields\.io/badge/%s-)[^-]+(-)" % re.escape(label),
+            r"\g<1>%s\g<2>" % versions[addon_id],
+            content,
+        )
+
+    with open(readme_path, "w", encoding="utf-8") as f:
+        f.write(content)
+
+
 def main():
     if os.path.isdir(OUTPUT_DIR):
         shutil.rmtree(OUTPUT_DIR)
@@ -74,10 +100,12 @@ def main():
 
     addon_bodies = []
     repo_index_entries = []
+    versions = {}
 
     for addon_id in ADDON_IDS:
         addon_dir = os.path.join(ROOT, addon_id)
         version, body = read_addon_xml(addon_dir)
+        versions[addon_id] = version
         addon_bodies.append(body)
 
         dest_dir = os.path.join(OUTPUT_DIR, addon_id)
@@ -114,6 +142,8 @@ def main():
         "vStream Listes",
         [("repo/", "repo/"), ("addons.xml", "addons.xml"), ("addons.xml.md5", "addons.xml.md5")],
     )
+
+    update_readme_badges(versions)
 
     print("Built addons.xml (md5 %s) and repo/ for: %s" % (digest, ", ".join(ADDON_IDS)))
 
