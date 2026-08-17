@@ -1,51 +1,68 @@
-# KodiLists
+<p align="center">
+  <img src="plugin.video.vstreamlists/icon.png" width="140" alt="vStream Listes">
+</p>
 
-Extension Kodi indépendante compatible avec vStream, dédiée à la création et
-à la gestion de listes personnalisées de films et séries via TMDB et la
-source Pastebin de vStream, sans Trakt.
+<h1 align="center">vStream Listes</h1>
 
-## vStream Listes - depot Kodi
+<p align="center">
+  Listes personnelles de films et séries pour Kodi, propulsées par TMDB et la source Pastebin de vStream.
+</p>
 
-Ce depot heberge le code source de **vStream Listes**
-(`plugin.video.vstreamlists`) ainsi que son propre depot Kodi
-(`repository.vstreamlists`), sur le meme modele que celui de vStream
-(`repository.vstream` + `raw.githubusercontent.com`).
+<p align="center">
+  <img alt="Version extension" src="https://img.shields.io/badge/vStream%20Listes-0.1.6-2ea3f2">
+  <img alt="Version depot" src="https://img.shields.io/badge/Repository-1.0.1-2ea3f2">
+  <img alt="Licence" src="https://img.shields.io/badge/licence-GPL--3.0-lightgrey">
+</p>
 
-## Structure
+---
 
-```
-plugin.video.vstreamlists/   code source de l'extension
-repository.vstreamlists/     petit addon "depot" (pointe vers ce repo GitHub)
-tools/build_repo.py          regenere addons.xml / addons.xml.md5 / repo/
-repo/                        (genere) zips + fiches par addon
-addons.xml, addons.xml.md5   (generes) index consomme par Kodi pour les MAJ
-index.html                   (genere) page de navigation pour Kodi/GitHub Pages
-```
+## 🎬 C'est quoi ?
 
-Apres toute modification du code d'un addon (nouvelle version dans son
-`addon.xml`), relancer :
+**vStream Listes** est une extension Kodi 100% indépendante qui te permet de
+créer tes propres listes de films et séries (Favoris, À regarder, Marvel,
+Films d'horreur...) directement depuis Kodi.
 
-```bash
-python tools/build_repo.py
-```
+Elle **ne modifie jamais vStream** : elle s'appuie simplement dessus pour
+retrouver et lire tes contenus via sa source Pastebin, pendant que **TMDB**
+fournit les affiches, synopsis, notes et années. Pas de compte, pas de
+Trakt, pas de données envoyées ailleurs — tout reste local, dans Kodi.
 
-puis commit + push. C'est cette regeneration + push qui met a jour le depot,
-il n'y a pas d'automatisation CI pour l'instant.
+## ✨ Fonctionnalités
 
-## Installation dans Kodi (comme vStream)
+- 📂 Créer, renommer, supprimer et réordonner autant de listes que tu veux
+- 🎞️ Ajouter un film ou une série **directement depuis vStream**, via
+  "Ajouter à mes listes" dans son menu contextuel
+- 🔀 Déplacer ou copier un contenu d'une liste à une autre
+- 🖼️ Affiches, synopsis, année, genres et note TMDB pour chaque titre
+- ▶️ Un clic pour lancer la lecture via vStream / Pastebin
+- 🔁 Mises à jour automatiques une fois le dépôt installé
 
-1. **Ajouter la source** : Systeme -> Gestionnaire de fichiers -> Ajouter une
-   source -> Aucun -> saisir
-   `https://PanameFR.github.io/KodiLists/` (nommer par ex. "repo vstreamlists").
-2. **Installer le depot** : Extensions -> Installer depuis un fichier zip ->
-   choisir la source ajoutee -> `repo/` -> `repository.vstreamlists/` -> le
-   seul fichier `.zip` present (son numero de version peut changer).
-3. **Installer l'extension** : Extensions -> Installer depuis un depot ->
-   "vStream Listes Repository" -> Extensions video -> vStream Listes ->
-   Installer.
+## 📦 Installation
 
-Les mises a jour futures sont ensuite automatiques (Kodi interroge
-`addons.xml` / `addons.xml.md5` via `raw.githubusercontent.com`, comme le
-fait `repository.vstream` pour vStream).
+1. **Ajouter la source** — *Système → Gestionnaire de fichiers → Ajouter une
+   source → Aucun* → saisir :
+   ```
+   https://PanameFR.github.io/KodiLists/
+   ```
+2. **Installer le dépôt** — *Extensions → Installer depuis un fichier zip* →
+   sélectionner la source ajoutée → `repo/` → `repository.vstreamlists/` →
+   le fichier `.zip`.
+3. **Installer l'extension** — *Extensions → Installer depuis un dépôt →
+   vStream Listes Repository → Extensions vidéo → vStream Listes →
+   Installer*.
 
-Depot : https://github.com/PanameFR/KodiLists
+Les mises à jour suivantes se font automatiquement — plus besoin de repasser
+par un zip.
+
+## ✅ Prérequis
+
+- [vStream](https://kodi-vstream.github.io/) installé et configuré, avec au
+  moins une source Pastebin active
+- Une clé API [TMDB](https://www.themoviedb.org/settings/api) (gratuite), à
+  renseigner dans les paramètres de vStream Listes
+
+## 📄 Licence & crédits
+
+Distribué sous licence GPL-3.0. S'appuie sur [vStream](https://github.com/Kodi-vStream/venom-xbmc-addons)
+pour la lecture et sur l'API [TMDB](https://www.themoviedb.org/) pour les
+métadonnées. Ce produit utilise l'API TMDB mais n'est ni approuvé ni certifié par TMDB.
