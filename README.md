@@ -9,8 +9,8 @@
 </p>
 
 <p align="center">
-  <img alt="Version extension" src="https://img.shields.io/badge/vStream%20Listes-0.1.6-2ea3f2">
-  <img alt="Version depot" src="https://img.shields.io/badge/Repository-1.0.1-2ea3f2">
+  <img alt="Version extension" src="https://img.shields.io/badge/vStream%20Listes-0.1.7-2ea3f2">
+  <img alt="Version depot" src="https://img.shields.io/badge/Repository-1.0.2-2ea3f2">
   <img alt="Licence" src="https://img.shields.io/badge/licence-GPL--3.0-lightgrey">
 </p>
 
@@ -46,7 +46,7 @@ pas de raison d'exister.
 1. **Ajouter la source** : *Système → Gestionnaire de fichiers → Ajouter une
    source → Aucun* → saisir :
    ```
-   https://PanameFR.github.io/KodiLists/
+   https://PanameFR.github.io/vStream-Listes/
    ```
 2. **Installer le dépôt** : *Extensions → Installer depuis un fichier zip* →
    sélectionner la source ajoutée → `repo/` → `repository.vstreamlists/` →
